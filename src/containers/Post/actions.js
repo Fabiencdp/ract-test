@@ -5,52 +5,71 @@ export const FETCHED_USER = 'FETCHED_USER';
 export const FETCHED_COMMENTS = 'FETCHED_COMMENTS';
 export const START_FETCH = 'START_FETCH';
 
-export function fetchedPost(post) {
-    return {
-        type: FETCHED_POST,
-        post
-    }
+export function fetchedPost(post = null, error = null) {
+  return {
+    type: FETCHED_POST,
+    post,
+    error
+  }
 }
 
-export function fetchedUser(user) {
-    /*
-     * Must return something right ?
-     */
+export function fetchedUser(user = null) {
+  return {
+    type: FETCHED_USER,
+    user
+  }
 }
 
-export function fetchedComments(/* params ? */) {
-    /*
-     * Just to be sure you understood :)
-     */
+export function fetchedComments(comments = [], error = null) {
+  return {
+    type: FETCHED_COMMENTS,
+    comments,
+    error
+  }
 }
 
 export function startFetch() {
-    return {
-        type: START_FETCH
-    }
+  return {
+    type: START_FETCH
+  }
 }
 
 export function fetch(postId) {
-    return (dispatch) => {
+  return (dispatch) => {
 
-        /*
-         * Pretty sure I need to get the user somewhere here
-         */
+    // Dispatch "loading" action
+    dispatch(startFetch());
 
-        dispatch(startFetch());
+    // *
+    // Get post and related stuff
+    Api.getPost(postId).then(post => {
 
-        Api.getPost(postId).then(data => {
-            dispatch(fetchedPost(data));
-        }).catch(err => {
-            console.error(err);
-        });
+      dispatch(fetchedPost(post));
 
-        Api.getPostComments(postId).then(data => {
-            dispatch(fetchedComments(data));
-        });
+      // Get related user from post
+      return Api.getPostUser(post.userId);
 
-        /*
-         * What if comments promise fail ??
-         */
-    }
+    }).then((user) => {
+
+      dispatch(fetchedUser(user));
+
+    }).catch(err => {
+
+      // *
+      // Error will trigger if we don't get user too
+      // Post must have a user
+      dispatch(fetchedPost(null, err));
+
+    });
+
+
+    // *
+    // Get post comment
+    Api.getPostComments(postId).then(data => {
+      dispatch(fetchedComments(data));
+    }).catch(err => {
+      dispatch(fetchedComments(null, err));
+    });
+
+  }
 }
