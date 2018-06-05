@@ -16,16 +16,16 @@ import 'normalize.css/normalize.css';
 const store = configureStore();
 
 ReactDOM.render((
-        <Provider store={store}>
-            <BrowserRouter>
-                <App>
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        { /*  Missing a route ?  */ }
-                        <Route component={NoMatch}/>
-                    </Switch>
-                </App>
-            </BrowserRouter>
-        </Provider>),
-    document.getElementById('root')
+    <Provider store={store}>
+      <BrowserRouter>
+        <App>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            {/*<Route exact path="/post" component={Post}/>*/}
+            <Route component={NoMatch}/>
+          </Switch>
+        </App>
+      </BrowserRouter>
+    </Provider>),
+  document.getElementById('root')
 );

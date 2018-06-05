@@ -1,38 +1,45 @@
+import Debug from 'debug';
+const debug = Debug('app:api');
+
 const endpoint = 'https://jsonplaceholder.typicode.com/';
 
 const call = (route) => {
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
-        const request = new XMLHttpRequest();
-        const url = `${endpoint}${route}`;
+    const request = new XMLHttpRequest();
+    const url = `${endpoint}${route}`;
 
-        /**  Missing something ?? **/
+    // *
+    // Run our call in async mode
+    request.open('GET', url, true);
+    request.send();
 
-        request.onreadystatechange = function () {
-            if (request.readyState === 4 && request.status === 200) {
-                resolve(JSON.parse(request.responseText));
-            } else if (request.readyState === 4) {
-                console.error("error here");
-                reject(request.responseText);
-            }
-        }
-    });
+    request.onreadystatechange = function () {
+      if (request.readyState === 4 && request.status === 200) {
+        resolve(JSON.parse(request.responseText));
+      } else if (request.readyState === 4) {
+        debug("Api Request error", request);
+        reject(request);
+      }
+    }
+
+  });
 };
 
 
 const Api = {
 
-    getPosts: () => {
-        return call('posts');
-    },
+  getPosts: () => {
+    return call('posts');
+  },
 
-    getPost: (idPost) => {
-        return call(`posts/${idPost}`);
-    },
+  getPost: (idPost) => {
+    return call(`posts/${idPost}`);
+  },
 
-    getPostComments: (idPost) => {
-        return [];
-    },
+  getPostComments: (idPost) => {
+    return [];
+  },
 };
 
 export default Api;

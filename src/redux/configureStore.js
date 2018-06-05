@@ -12,8 +12,7 @@ function configureStore() {
         post
     });
 
-    const store = createStore(reducer, enhancer);
-    return store;
+    return createStore(reducer, enhancer);
 }
 
 export default configureStore;
