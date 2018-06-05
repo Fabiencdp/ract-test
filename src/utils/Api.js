@@ -14,6 +14,7 @@ const call = (route) => {
     request.open('GET', url, true);
     request.send();
 
+    // On ready
     request.onreadystatechange = function () {
       if (request.readyState === 4 && request.status === 200) {
         resolve(JSON.parse(request.responseText));

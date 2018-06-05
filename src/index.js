@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
+
+// Containers and components
 import Home from './containers/Home';
 import Post from './containers/Post';
 import App from './components/App';

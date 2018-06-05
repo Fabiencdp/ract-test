@@ -70,22 +70,17 @@ class Post extends React.PureComponent {
     }
 
     return (
-      <div>
+      <div className="content">
 
         <div className="header">
-          <h1>{ post.title }</h1>
+          <h1 className="title">{ post.title }</h1>
+          <h2 className="subtitle is-6 has-text-grey-light">By { user.name }, { user.company.name }, <i>{ user.address.city }</i></h2>
         </div>
-
-        {user &&
-          <div>
-            <p><i>By { user.name }, { user.company.name }, { user.address.city }</i></p>
-          </div>
-        }
 
         <p>{ post.body }</p>
 
-        <div className="comments">
-          <h3>Comments</h3>
+        <div className="comments box">
+          <p className="title is-5">Comments</p>
           <div className="comment-list">
             { this.renderCommentsList() }
           </div>

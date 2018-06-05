@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './comment.css';
+
 function Comment({authorName, authorEmail, content}) {
   return (
-    <div>
+    <div className="comment">
       <h4 className="title is-6">{authorName}</h4>
 
-      {/* Handle anon user */}
+      {/* Allow anonymous user */}
       {authorEmail &&
-        <h6 className="subtitle has-text-grey-lighter">From {authorEmail}</h6>
+        <h6 className="subtitle is-7 has-text-grey-light">From {authorEmail}</h6>
       }
 
       <p className="comment-content">{content}</p>
