@@ -38,7 +38,7 @@ const Api = {
   },
 
   getPostComments: (idPost) => {
-    return [];
+    return call(`posts/${idPost}/comments`);
   },
 };
 

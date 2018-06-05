@@ -6,51 +6,61 @@ export const FETCHED_COMMENTS = 'FETCHED_COMMENTS';
 export const START_FETCH = 'START_FETCH';
 
 export function fetchedPost(post) {
-    return {
-        type: FETCHED_POST,
-        post
-    }
+  return {
+    type: FETCHED_POST,
+    post
+  }
 }
 
 export function fetchedUser(user) {
-    /*
-     * Must return something right ?
-     */
+  return {
+    type: FETCHED_USER,
+    user
+  }
 }
 
-export function fetchedComments(/* params ? */) {
-    /*
-     * Just to be sure you understood :)
-     */
+export function fetchedComments(comments) {
+  return {
+    type: FETCHED_COMMENTS,
+    comments
+  }
 }
 
 export function startFetch() {
-    return {
-        type: START_FETCH
-    }
+  return {
+    type: START_FETCH
+  }
 }
 
 export function fetch(postId) {
-    return (dispatch) => {
+  return (dispatch) => {
 
-        /*
-         * Pretty sure I need to get the user somewhere here
-         */
+    /*
+     * Pretty sure I need to get the user somewhere here
+     * TODO: fetch user data !
+     */
 
-        dispatch(startFetch());
+    // Dispatch "loading" action
+    dispatch(startFetch());
 
-        Api.getPost(postId).then(data => {
-            dispatch(fetchedPost(data));
-        }).catch(err => {
-            console.error(err);
-        });
+    // *
+    // Get post by id
+    Api.getPost(postId).then(data => {
+      dispatch(fetchedPost(data));
+    }).catch(err => {
+      console.error(err);
+    });
 
-        Api.getPostComments(postId).then(data => {
-            dispatch(fetchedComments(data));
-        });
+    // *
+    // Get post comment
+    // TODO: handle error
+    Api.getPostComments(postId).then(data => {
+      dispatch(fetchedComments(data));
+    });
 
-        /*
-         * What if comments promise fail ??
-         */
-    }
+    /*
+     * What if comments promise fail ??
+     * TODO: Handle error
+     */
+  }
 }
