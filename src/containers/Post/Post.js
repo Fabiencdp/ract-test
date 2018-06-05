@@ -5,21 +5,22 @@ import { fetch } from './actions';
 
 class Post extends React.PureComponent {
 
-  constructor(props) {
-    super(props);
-    console.log(props);
-  }
-
   componentDidMount() {
     this.props.dispatch(fetch(this.props.match.params.id));
   }
 
   renderCommentsList = () => {
-    // TODO: add comments
-    return <li />;
+    return this.props.comments.map(comment => (
+      <Comment key={comment.id}
+               authorEmail={comment.email}
+               authorName={comment.name}
+               content={comment.body} />
+    ));
   };
 
   render() {
+
+    console.log('props', this.props);
 
     const { post, user, comments } = this.props;
 
@@ -45,5 +46,6 @@ class Post extends React.PureComponent {
 
 export default connect(({ post }) => ({
   post: post.post,
+  comments: post.comments,
   error: post.error
 }))(Post);
