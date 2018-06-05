@@ -22,7 +22,7 @@ class Home extends React.PureComponent {
 
         {this.props.error &&
           <div className="notification is-danger">
-            We are really sorry, an error occurred <br/> Error code: {this.props.error}
+            We are really sorry, an error occurred :( <br/> Error code: {this.props.error}
           </div>
         }
 

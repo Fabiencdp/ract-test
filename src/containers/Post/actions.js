@@ -5,24 +5,26 @@ export const FETCHED_USER = 'FETCHED_USER';
 export const FETCHED_COMMENTS = 'FETCHED_COMMENTS';
 export const START_FETCH = 'START_FETCH';
 
-export function fetchedPost(post) {
+export function fetchedPost(post = null, error = null) {
   return {
     type: FETCHED_POST,
-    post
+    post,
+    error
   }
 }
 
-export function fetchedUser(user) {
+export function fetchedUser(user = null) {
   return {
     type: FETCHED_USER,
     user
   }
 }
 
-export function fetchedComments(comments) {
+export function fetchedComments(comments = [], error = null) {
   return {
     type: FETCHED_COMMENTS,
-    comments
+    comments,
+    error
   }
 }
 
@@ -35,32 +37,39 @@ export function startFetch() {
 export function fetch(postId) {
   return (dispatch) => {
 
-    /*
-     * Pretty sure I need to get the user somewhere here
-     * TODO: fetch user data !
-     */
-
     // Dispatch "loading" action
     dispatch(startFetch());
 
     // *
-    // Get post by id
-    Api.getPost(postId).then(data => {
-      dispatch(fetchedPost(data));
+    // Get post and related stuff
+    Api.getPost(postId).then(post => {
+
+      dispatch(fetchedPost(post));
+
+      // Get related user from post
+      return Api.getPostUser(post.userId);
+
+    }).then((user) => {
+
+      dispatch(fetchedUser(user));
+
     }).catch(err => {
-      console.error(err);
+
+      // *
+      // Error will trigger if we don't get user too
+      // Post must have a user
+      dispatch(fetchedPost(null, err));
+
     });
+
 
     // *
     // Get post comment
-    // TODO: handle error
     Api.getPostComments(postId).then(data => {
       dispatch(fetchedComments(data));
+    }).catch(err => {
+      dispatch(fetchedComments(null, err));
     });
 
-    /*
-     * What if comments promise fail ??
-     * TODO: Handle error
-     */
   }
 }

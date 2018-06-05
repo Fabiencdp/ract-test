@@ -15,7 +15,7 @@ export function fetch() {
       dispatch(fetched(data));
     }).catch(err => {
       // Return an empty object and error status if possible
-      dispatch(fetched([], (err.status || 'unknown error')));
+      dispatch(fetched([], err));
     });
   }
 }

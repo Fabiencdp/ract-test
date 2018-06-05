@@ -19,7 +19,8 @@ const call = (route) => {
         resolve(JSON.parse(request.responseText));
       } else if (request.readyState === 4) {
         debug("Api Request error", request);
-        reject(request);
+        const errorCode = request.status || 'unknown error';
+        reject(errorCode);
       }
     }
 
@@ -35,6 +36,10 @@ const Api = {
 
   getPost: (idPost) => {
     return call(`posts/${idPost}`);
+  },
+
+  getPostUser: (idUser) => {
+    return call(`users/${idUser}`);
   },
 
   getPostComments: (idPost) => {
